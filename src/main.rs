@@ -16,7 +16,7 @@ static API: Lazy<Api> = Lazy::new(Api::new);
 async fn query() -> impl Responder {
 	let mut data = String::new();
 
-	if let Ok(vs) = API.validators().await {
+	if let Ok(vs) = API.collators().await {
 		future::join_all(vs.into_iter().map(|v| async move {
 			let commission_history = loop {
 				if let Ok(c) = API.commission_history_of(&v).await {
@@ -81,7 +81,7 @@ async fn query() -> impl Responder {
           <body>
             <table style="margin: 0 auto;">
               <tr>
-                <th>Validator</th>
+                <th>Collator</th>
                 <th>Commission History (Block,Value)</th>
                 <th>Reputation Base on Recent 5 Changes</th>
               </tr>

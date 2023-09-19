@@ -25,7 +25,7 @@ impl Api {
 		}
 	}
 
-	pub async fn validators(&self) -> Result<Vec<String>> {
+	pub async fn collators(&self) -> Result<Vec<String>> {
 		let json = state::get_storage(
 			0,
 			"0xcec5070d609dd3497f72bde07fc96ba088dcde934c658227ee1dfafcd6e16903",
@@ -39,14 +39,14 @@ impl Api {
 			.await?
 			.json::<JsonrpcResult>()
 			.await?;
-		let validators =
+		let collators =
 			<Vec<[u8; 20]>>::decode(&mut &*array_bytes::hex2bytes_unchecked(result.result))
 				.unwrap()
 				.into_iter()
 				.map(|v| array_bytes::bytes2hex("0x", v))
 				.collect();
 
-		Ok(validators)
+		Ok(collators)
 	}
 
 	pub async fn commission_history_of(&self, who: &str) -> Result<CommissionHistory> {
